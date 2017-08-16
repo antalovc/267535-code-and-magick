@@ -1,11 +1,11 @@
-'use strict'
+'use strict';
 
 var drawCloud = function (ctx, x, y, arrayX, arrayY, strokeColor, fillColor) {
   ctx.strokeStyle = strokeColor;
   ctx.fillStyle = fillColor;
 
-  ctx.beginPath();
   ctx.moveTo(arrayX[0], arrayY[0]);
+  ctx.beginPath();
   for (var i = 0; i < arrayX.length - 1; i++) {
     ctx.lineTo(x + arrayX[i], y + arrayY[i]);
     ctx.lineTo(x + arrayX[i + 1], y + arrayY[i]);
@@ -27,7 +27,7 @@ var drawText = function (ctx, textArray, x, y, font, fontColor, fontSize, lineHe
 };
 
 var drawStatistics = function (ctx, names, times, x, y, width, height, colWidth, colSpacing, playerColor, otherPlayersColor, font, fontColor, fontSize, lineHeightCoefficient) {
-  var horisontalPadding = (width - names.length * colWidth - (names.length - 1) * colSpacing) / 2;
+  var horizontalPadding = (width - names.length * colWidth - (names.length - 1) * colSpacing) / 2;
   var columnsHeight = height - fontSize * 2 * lineHeightCoefficient;
   var linePaddingCoefficient = (lineHeightCoefficient - 1) > 0 ? (lineHeightCoefficient - 1) / 2 : 0;
 
@@ -37,8 +37,8 @@ var drawStatistics = function (ctx, names, times, x, y, width, height, colWidth,
       maxTime = times[i];
     }
   }
-  var verticalScaleCoefficient =  columnsHeight / maxTime;
-  var leftPosition = x + horisontalPadding;
+  var verticalScaleCoefficient = columnsHeight / maxTime;
+  var leftPosition = x + horizontalPadding;
   var topPosition = 0;
   ctx.textBaseline = 'hanging';
   ctx.font = fontSize + 'px ' + font;
@@ -98,8 +98,6 @@ var renderStatistics = function (ctx, names, times) {
   drawCloud(ctx, cloudX + shadowShiftX, cloudY + shadowShiftY, cloudArrayX, cloudArrayY, shadowColor, shadowColor);
   drawCloud(ctx, cloudX, cloudY, cloudArrayX, cloudArrayY, cloudStrokeColor, cloudFillColor);
   drawText(ctx, textArray, cloudX + horizontalInnerPadding, cloudY + verticalInnerPadding, font, fontColor, fontSize, lineHeightCoefficient);
-  drawStatistics(ctx, names, times, cloudX + horizontalInnerPadding, cloudY + verticalInnerPadding + textHeight,
-    cloudWidth - 2 * horizontalInnerPadding, cloudHeight - 2 * verticalInnerPadding - textHeight,
-    colWidth, colSpacing, playerColor, otherPlayersColor, font, fontColor, fontSize, lineHeightCoefficient);
+  drawStatistics(ctx, names, times, cloudX + horizontalInnerPadding, cloudY + verticalInnerPadding + textHeight, cloudWidth - 2 * horizontalInnerPadding, cloudHeight - 2 * verticalInnerPadding - textHeight, colWidth, colSpacing, playerColor, otherPlayersColor, font, fontColor, fontSize, lineHeightCoefficient);
 
-}
+};

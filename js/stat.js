@@ -18,10 +18,10 @@ var drawCloud = function (ctx, x, y, arrayX, arrayY, strokeColor, fillColor) {
 
 var drawText = function (ctx, textArray, x, y, font, fontColor, fontSize, lineHeightCoefficient) {
   var linePaddingCoefficient = (lineHeightCoefficient - 1) > 0 ? (lineHeightCoefficient - 1) / 2 : 0;
-  ctx.fillStyle = fontColor;
+  ctx.fillStyle = fontColor || '#000000';
+  ctx.font = fontSize + 'px ' + font;
+  ctx.textBaseline = 'hanging';
   for (var i = 0; i < textArray.length; i++) {
-    ctx.font = fontSize + 'px ' + font;
-    ctx.textBaseline = 'hanging';
     ctx.fillText(textArray[i], x, y + i * Math.ceil(fontSize * lineHeightCoefficient) + Math.ceil(fontSize * linePaddingCoefficient));
   }
 };

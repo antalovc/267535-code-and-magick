@@ -79,15 +79,14 @@ var renderStatistics = function (ctx, names, times) {
   var cloudStrokeColor = 'rgba(0, 0, 0, 1)';
   var shadowColor = 'rgba(0, 0, 0, 0.7)';
 
-  var statisticsText = 'Ура вы победили!\nСписок результатов:';
   var font = 'PT Mono';
   var fontSize = 16;
   var fontColor = 'black';
   var lineHeightCoefficient = 1.2;
-  var textArray = statisticsText.split('\n');
+  var statisticsTextArray = ['Ура вы победили!', 'Список результатов:'];
 
   var statisticsHeight = 150;
-  var textHeight = Math.ceil(textArray.length * fontSize * lineHeightCoefficient);
+  var textHeight = Math.ceil(statisticsTextArray.length * fontSize * lineHeightCoefficient);
   var verticalInnerPadding = (cloudHeight - textHeight - statisticsHeight) / 2;
   var horizontalInnerPadding = 50;
   var colWidth = 40;
@@ -97,7 +96,7 @@ var renderStatistics = function (ctx, names, times) {
 
   drawCloud(ctx, cloudX + shadowShiftX, cloudY + shadowShiftY, cloudArrayX, cloudArrayY, shadowColor, shadowColor);
   drawCloud(ctx, cloudX, cloudY, cloudArrayX, cloudArrayY, cloudStrokeColor, cloudFillColor);
-  drawText(ctx, textArray, cloudX + horizontalInnerPadding, cloudY + verticalInnerPadding, font, fontColor, fontSize, lineHeightCoefficient);
+  drawText(ctx, statisticsTextArray, cloudX + horizontalInnerPadding, cloudY + verticalInnerPadding, font, fontColor, fontSize, lineHeightCoefficient);
   drawStatistics(ctx, names, times, cloudX + horizontalInnerPadding, cloudY + verticalInnerPadding + textHeight, cloudWidth - 2 * horizontalInnerPadding, cloudHeight - 2 * verticalInnerPadding - textHeight, colWidth, colSpacing, playerColor, otherPlayersColor, font, fontColor, fontSize, lineHeightCoefficient);
 
 };

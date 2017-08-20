@@ -60,7 +60,7 @@ var drawStatistics = function (ctx, names, times, x, y, width, height, colWidth,
   }
 };
 
-var renderStatistics = function (ctx, names, times) {
+window.renderStatistics = function (ctx, names, times) {
   var CLOUD_X = 100;
   var CLOUD_Y = 10;
   var CLOUD_WIDTH = 420;

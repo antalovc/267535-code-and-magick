@@ -1,66 +1,6 @@
 'use strict';
 
-var drawCloud = function (ctx, x, y, arrayX, arrayY, strokeColor, fillColor) {
-  ctx.strokeStyle = strokeColor;
-  ctx.fillStyle = fillColor;
-
-  ctx.moveTo(arrayX[0], arrayY[0]);
-  ctx.beginPath();
-  for (var i = 0; i < arrayX.length - 1; i++) {
-    ctx.lineTo(x + arrayX[i], y + arrayY[i]);
-    ctx.lineTo(x + arrayX[i + 1], y + arrayY[i]);
-  }
-  ctx.closePath();
-
-  ctx.stroke();
-  ctx.fill();
-};
-
-var drawText = function (ctx, textArray, x, y, font, fontColor, fontSize, lineHeightCoefficient) {
-  var linePaddingCoefficient = (lineHeightCoefficient - 1) > 0 ? (lineHeightCoefficient - 1) / 2 : 0;
-  ctx.fillStyle = fontColor || '#000000';
-  ctx.font = fontSize + 'px ' + font;
-  ctx.textBaseline = 'hanging';
-  for (var i = 0; i < textArray.length; i++) {
-    ctx.fillText(textArray[i], x, y + i * Math.ceil(fontSize * lineHeightCoefficient) + Math.ceil(fontSize * linePaddingCoefficient));
-  }
-};
-
-var drawStatistics = function (ctx, names, times, x, y, width, height, colWidth, colSpacing, playerColor, otherPlayersColor, font, fontColor, fontSize, lineHeightCoefficient) {
-  var horizontalPadding = (width - names.length * colWidth - (names.length - 1) * colSpacing) / 2;
-  var columnsHeight = height - fontSize * 2 * lineHeightCoefficient;
-  var linePaddingCoefficient = (lineHeightCoefficient - 1) > 0 ? (lineHeightCoefficient - 1) / 2 : 0;
-
-  var maxTime = 0;
-  for (var i = 0; i < times.length; i++) {
-    if (maxTime < times[i]) {
-      maxTime = times[i];
-    }
-  }
-  var verticalScaleCoefficient = columnsHeight / maxTime;
-  var leftPosition = x + horizontalPadding;
-  var topPosition = 0;
-  ctx.textBaseline = 'hanging';
-  ctx.font = fontSize + 'px ' + font;
-  for (var j = 0; j < names.length; j++) {
-    topPosition = y + height - fontSize * lineHeightCoefficient;
-    ctx.fillStyle = fontColor;
-    ctx.fillText(names[j], leftPosition, topPosition + linePaddingCoefficient * fontSize);
-
-    topPosition -= verticalScaleCoefficient * times[j];
-    ctx.fillStyle = (names[j] === 'Вы') ? playerColor : otherPlayersColor.replace(/\d+\.?\d*(?=\))/, +Math.random().toFixed(1));
-
-    ctx.fillRect(leftPosition, topPosition, colWidth, verticalScaleCoefficient * times[j]);
-
-    topPosition -= fontSize * lineHeightCoefficient;
-    ctx.fillStyle = fontColor;
-    ctx.fillText(Math.round(times[j]).toString(10), leftPosition, topPosition + linePaddingCoefficient * fontSize);
-
-    leftPosition += (colWidth + colSpacing);
-  }
-};
-
-var renderStatistics = function (ctx, names, times) {
+window.renderStatistics = function (ctx, names, times) {
   var CLOUD_X = 100;
   var CLOUD_Y = 10;
   var CLOUD_WIDTH = 420;
@@ -92,6 +32,66 @@ var renderStatistics = function (ctx, names, times) {
   var textHeight = Math.ceil(STATISTICS_TEXT_ARRAY.length * FONT_SIZE * LINE_HEIGHT_COEFFICIENT);
   var verticalInnerPadding = (CLOUD_HEIGHT - textHeight - STATISTICS_HEIGHT) / 2;
   var innerStatisticsX = CLOUD_X + HORIZONTAL_INNER_PADDING;
+
+  var drawCloud = function (ctxArg, x, y, arrayX, arrayY, strokeColor, fillColor) {
+    ctxArg.strokeStyle = strokeColor;
+    ctxArg.fillStyle = fillColor;
+
+    ctxArg.moveTo(arrayX[0], arrayY[0]);
+    ctxArg.beginPath();
+    for (var i = 0; i < arrayX.length - 1; i++) {
+      ctxArg.lineTo(x + arrayX[i], y + arrayY[i]);
+      ctxArg.lineTo(x + arrayX[i + 1], y + arrayY[i]);
+    }
+    ctxArg.closePath();
+
+    ctxArg.stroke();
+    ctxArg.fill();
+  };
+
+  var drawText = function (ctxArg, textArray, x, y, font, fontColor, fontSize, lineHeightCoefficient) {
+    var linePaddingCoefficient = (lineHeightCoefficient - 1) > 0 ? (lineHeightCoefficient - 1) / 2 : 0;
+    ctxArg.fillStyle = fontColor || '#000000';
+    ctxArg.font = fontSize + 'px ' + font;
+    ctxArg.textBaseline = 'hanging';
+    for (var i = 0; i < textArray.length; i++) {
+      ctxArg.fillText(textArray[i], x, y + i * Math.ceil(fontSize * lineHeightCoefficient) + Math.ceil(fontSize * linePaddingCoefficient));
+    }
+  };
+
+  var drawStatistics = function (ctxArg, namesArg, timesArg, x, y, width, height, colWidth, colSpacing, playerColor, otherPlayersColor, font, fontColor, fontSize, lineHeightCoefficient) {
+    var horizontalPadding = (width - names.length * colWidth - (names.length - 1) * colSpacing) / 2;
+    var columnsHeight = height - fontSize * 2 * lineHeightCoefficient;
+    var linePaddingCoefficient = (lineHeightCoefficient - 1) > 0 ? (lineHeightCoefficient - 1) / 2 : 0;
+
+    var maxTime = 0;
+    for (var i = 0; i < timesArg.length; i++) {
+      if (maxTime < timesArg[i]) {
+        maxTime = timesArg[i];
+      }
+    }
+    var verticalScaleCoefficient = columnsHeight / maxTime;
+    var leftPosition = x + horizontalPadding;
+    var topPosition = 0;
+    ctxArg.textBaseline = 'hanging';
+    ctxArg.font = fontSize + 'px ' + font;
+    for (var j = 0; j < namesArg.length; j++) {
+      topPosition = y + height - fontSize * lineHeightCoefficient;
+      ctxArg.fillStyle = fontColor;
+      ctxArg.fillText(namesArg[j], leftPosition, topPosition + linePaddingCoefficient * fontSize);
+
+      topPosition -= verticalScaleCoefficient * timesArg[j];
+      ctxArg.fillStyle = (namesArg[j] === 'Вы') ? playerColor : otherPlayersColor.replace(/\d+\.?\d*(?=\))/, +Math.random().toFixed(1));
+
+      ctxArg.fillRect(leftPosition, topPosition, colWidth, verticalScaleCoefficient * timesArg[j]);
+
+      topPosition -= fontSize * lineHeightCoefficient;
+      ctxArg.fillStyle = fontColor;
+      ctxArg.fillText(Math.round(timesArg[j]).toString(10), leftPosition, topPosition + linePaddingCoefficient * fontSize);
+
+      leftPosition += (colWidth + colSpacing);
+    }
+  };
 
   drawCloud(ctx, CLOUD_X + SHADOW_X_SHIFT, CLOUD_Y + SHADOW_Y_SHIFT, CLOUD_X_ARRAY, CLOUD_Y_ARRAY, SHADOW_COLOR, SHADOW_COLOR);
   drawCloud(ctx, CLOUD_X, CLOUD_Y, CLOUD_X_ARRAY, CLOUD_Y_ARRAY, CLOUD_COLOR_STROKE, CLOUD_COLOR_FILL);

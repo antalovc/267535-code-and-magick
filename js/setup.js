@@ -27,7 +27,7 @@ var generatePersonages = function (nPersonages) {
     personageName = getRandomFromArray(NAMES);
     personageSurname = getRandomFromArray(SURNAMES);
     result.push({
-      name: Math.round(Math.random()) ? (personageName + ' ' + personageSurname) : (personageName + ' ' + personageSurname),
+      name: Math.round(Math.random()) ? (personageName + ' ' + personageSurname) : (personageSurname + ' ' + personageName),
       coatColor: getRandomFromArray(COLORS_COAT),
       eyesColor: getRandomFromArray(COLORS_EYES)
     });

@@ -115,11 +115,15 @@ setupClose.addEventListener('keydown', function (evt) {
 });
 
 setupSubmit.addEventListener('click', function () {
-  closeSetupWindow();
+  if (setupWindow.querySelector('form').checkValidity()) {
+    closeSetupWindow();
+  }
 });
 
 setupSubmit.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
-    closeSetupWindow();
+    if (setupWindow.querySelector('form').checkValidity()) {
+      closeSetupWindow();
+    }
   }
 });

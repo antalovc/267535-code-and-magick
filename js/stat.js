@@ -73,6 +73,7 @@ window.renderStatistics = function (ctx, names, times) {
     var verticalScaleCoefficient = columnsHeight / maxTime;
     var leftPosition = x + horizontalPadding;
     var topPosition = 0;
+    var opacity = 0;
     ctxArg.textBaseline = 'hanging';
     ctxArg.font = fontSize + 'px ' + font;
     for (var j = 0; j < namesArg.length; j++) {
@@ -81,7 +82,10 @@ window.renderStatistics = function (ctx, names, times) {
       ctxArg.fillText(namesArg[j], leftPosition, topPosition + linePaddingCoefficient * fontSize);
 
       topPosition -= verticalScaleCoefficient * timesArg[j];
-      ctxArg.fillStyle = (namesArg[j] === 'Вы') ? playerColor : otherPlayersColor.replace(/\d+\.?\d*(?=\))/, +Math.random().toFixed(1));
+      do {
+        opacity = +Math.random().toFixed(1);
+      } while (opacity === 0)
+      ctxArg.fillStyle = (namesArg[j] === 'Вы') ? playerColor : otherPlayersColor.replace(/\d+\.?\d*(?=\))/, opacity);
 
       ctxArg.fillRect(leftPosition, topPosition, colWidth, verticalScaleCoefficient * timesArg[j]);
 

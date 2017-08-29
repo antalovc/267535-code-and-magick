@@ -1,6 +1,6 @@
 'use strict';
 
-window.renderStatistics = function (ctx, names, times) {
+window.renderStatistics = (function () {
   var CLOUD_X = 100;
   var CLOUD_Y = 10;
   var CLOUD_WIDTH = 420;
@@ -60,7 +60,7 @@ window.renderStatistics = function (ctx, names, times) {
   };
 
   var drawStatistics = function (ctxArg, namesArg, timesArg, x, y, width, height, colWidth, colSpacing, playerColor, otherPlayersColor, font, fontColor, fontSize, lineHeightCoefficient) {
-    var horizontalPadding = (width - names.length * colWidth - (names.length - 1) * colSpacing) / 2;
+    var horizontalPadding = (width - namesArg.length * colWidth - (namesArg.length - 1) * colSpacing) / 2;
     var columnsHeight = height - fontSize * 2 * lineHeightCoefficient;
     var linePaddingCoefficient = (lineHeightCoefficient - 1) > 0 ? (lineHeightCoefficient - 1) / 2 : 0;
 
@@ -73,6 +73,7 @@ window.renderStatistics = function (ctx, names, times) {
     var verticalScaleCoefficient = columnsHeight / maxTime;
     var leftPosition = x + horizontalPadding;
     var topPosition = 0;
+    var opacity = 0;
     ctxArg.textBaseline = 'hanging';
     ctxArg.font = fontSize + 'px ' + font;
     for (var j = 0; j < namesArg.length; j++) {
@@ -81,7 +82,10 @@ window.renderStatistics = function (ctx, names, times) {
       ctxArg.fillText(namesArg[j], leftPosition, topPosition + linePaddingCoefficient * fontSize);
 
       topPosition -= verticalScaleCoefficient * timesArg[j];
-      ctxArg.fillStyle = (namesArg[j] === 'Вы') ? playerColor : otherPlayersColor.replace(/\d+\.?\d*(?=\))/, +Math.random().toFixed(1));
+      do {
+        opacity = +Math.random().toFixed(1);
+      } while (opacity === 0);
+      ctxArg.fillStyle = (namesArg[j] === 'Вы') ? playerColor : otherPlayersColor.replace(/\d+\.?\d*(?=\))/, opacity);
 
       ctxArg.fillRect(leftPosition, topPosition, colWidth, verticalScaleCoefficient * timesArg[j]);
 
@@ -93,9 +97,12 @@ window.renderStatistics = function (ctx, names, times) {
     }
   };
 
-  drawCloud(ctx, CLOUD_X + SHADOW_X_SHIFT, CLOUD_Y + SHADOW_Y_SHIFT, CLOUD_X_ARRAY, CLOUD_Y_ARRAY, SHADOW_COLOR, SHADOW_COLOR);
-  drawCloud(ctx, CLOUD_X, CLOUD_Y, CLOUD_X_ARRAY, CLOUD_Y_ARRAY, CLOUD_COLOR_STROKE, CLOUD_COLOR_FILL);
-  drawText(ctx, STATISTICS_TEXT_ARRAY, innerStatisticsX, CLOUD_Y + verticalInnerPadding, FONT, FONT_COLOR, FONT_SIZE, LINE_HEIGHT_COEFFICIENT);
-  drawStatistics(ctx, names, times, innerStatisticsX, CLOUD_Y + verticalInnerPadding + textHeight, CLOUD_WIDTH - 2 * HORIZONTAL_INNER_PADDING, CLOUD_HEIGHT - 2 * verticalInnerPadding - textHeight, COL_WIDTH, COL_SPACING, PLAYER_COLOR, OTHER_PLAYERS_COLOR, FONT, FONT_COLOR, FONT_SIZE, LINE_HEIGHT_COEFFICIENT);
 
-};
+  return function (ctx, names, times) {
+    drawCloud(ctx, CLOUD_X + SHADOW_X_SHIFT, CLOUD_Y + SHADOW_Y_SHIFT, CLOUD_X_ARRAY, CLOUD_Y_ARRAY, SHADOW_COLOR, SHADOW_COLOR);
+    drawCloud(ctx, CLOUD_X, CLOUD_Y, CLOUD_X_ARRAY, CLOUD_Y_ARRAY, CLOUD_COLOR_STROKE, CLOUD_COLOR_FILL);
+    drawText(ctx, STATISTICS_TEXT_ARRAY, innerStatisticsX, CLOUD_Y + verticalInnerPadding, FONT, FONT_COLOR, FONT_SIZE, LINE_HEIGHT_COEFFICIENT);
+    drawStatistics(ctx, names, times, innerStatisticsX, CLOUD_Y + verticalInnerPadding + textHeight, CLOUD_WIDTH - 2 * HORIZONTAL_INNER_PADDING, CLOUD_HEIGHT - 2 * verticalInnerPadding - textHeight, COL_WIDTH, COL_SPACING, PLAYER_COLOR, OTHER_PLAYERS_COLOR, FONT, FONT_COLOR, FONT_SIZE, LINE_HEIGHT_COEFFICIENT);
+  };
+
+})();

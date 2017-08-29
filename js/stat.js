@@ -84,7 +84,7 @@ window.renderStatistics = function (ctx, names, times) {
       topPosition -= verticalScaleCoefficient * timesArg[j];
       do {
         opacity = +Math.random().toFixed(1);
-      } while (opacity === 0)
+      } while (opacity === 0);
       ctxArg.fillStyle = (namesArg[j] === 'Вы') ? playerColor : otherPlayersColor.replace(/\d+\.?\d*(?=\))/, opacity);
 
       ctxArg.fillRect(leftPosition, topPosition, colWidth, verticalScaleCoefficient * timesArg[j]);

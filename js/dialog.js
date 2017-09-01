@@ -9,8 +9,13 @@
   var setupSubmit = setupWindow.querySelector('.setup-submit');
   var setupUserPic = setupWindow.querySelector('.upload');
 
+  var preventSetupUserFileClick = false;
+
   setupUserPic.querySelector('input[type=file]').addEventListener('click', function (evt) {
-    evt.preventDefault();
+    if (preventSetupUserFileClick) {
+      evt.preventDefault();
+      preventSetupUserFileClick = false;
+    }
   });
 
   setupUserPic.addEventListener('mousedown', function (evt) {
@@ -22,6 +27,7 @@
     };
 
     var onMouseMove = function (moveEvt) {
+      preventSetupUserFileClick = true;
       moveEvt.preventDefault();
 
       var shift = {

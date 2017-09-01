@@ -1,11 +1,11 @@
 'use strict';
 
-window.colorize = (function () {
+window.colorizeElement = (function () {
 
   return function (element, colorsArray, onColorChange) {
 
     element.addEventListener('click', function () {
-      onColorChange(window.util.getRandomArrayItem(colorsArray));
+      onColorChange(element, window.util.getRandomArrayItem(colorsArray));
     });
 
   };

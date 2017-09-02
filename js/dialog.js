@@ -54,13 +54,11 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  var onSetupWindowEscPress = function (evt) {
-    window.util.callIfEscEvent(evt, closeSetupWindow);
-  };
+  var documentEscListener = null;
 
   var openSetupWindow = function () {
     setupWindow.classList.remove('hidden');
-    document.addEventListener('keydown', onSetupWindowEscPress);
+    documentEscListener = window.util.addEscEventListener(document, closeSetupWindow);
   };
 
   var closeSetupWindow = function () {
@@ -69,37 +67,26 @@
     setupWindow.style.removeProperty('top');
     setupWindow.style.removeProperty('left');
 
-    document.removeEventListener('keydown', onSetupWindowEscPress);
+    document.removeEventListener('keydown', documentEscListener);
   };
 
-  setupOpen.addEventListener('click', function () {
-    openSetupWindow();
-  });
-
-  setupOpen.addEventListener('keydown', function (evt) {
-    window.util.callIfEnterEvent(evt, openSetupWindow);
-  });
-
-  setupClose.addEventListener('click', function () {
-    closeSetupWindow();
-  });
-
-  setupClose.addEventListener('keydown', function (evt) {
-    window.util.callIfEnterEvent(evt, closeSetupWindow);
-  });
-
-  setupSubmit.addEventListener('click', function () {
-    if (setupWindow.querySelector('form').checkValidity()) {
-      closeSetupWindow();
-    }
-  });
-
-  setupSubmit.addEventListener('keydown', function (evt) {
-    window.util.callIfEnterEvent(evt, function () {
-      if (setupWindow.querySelector('form').checkValidity()) {
+  var submitSetupWindow = function (evt) {
+    var form = setupWindow.querySelector('form');
+    if (form.checkValidity()) {
+      window.backend.save(new FormData(form), function () {
         closeSetupWindow();
-      }
-    });
-  });
+      }, window.util.showErrorMessage);
+      evt.preventDefault();
+    }
+  };
+
+  setupOpen.addEventListener('click', openSetupWindow);
+  window.util.addEnterEventListener(setupOpen, openSetupWindow);
+
+  setupClose.addEventListener('click', closeSetupWindow);
+  window.util.addEnterEventListener(setupClose, closeSetupWindow);
+
+  setupSubmit.addEventListener('click', submitSetupWindow);
+  window.util.addEnterEventListener(setupSubmit, submitSetupWindow);
 
 })();

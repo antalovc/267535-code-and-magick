@@ -36,7 +36,7 @@ window.util = (function () {
     }
 
     return res;
-  }
+  };
 
   return {
     generateRandomIntegerFromRange: generateRandomIntegerFromRange,
@@ -66,7 +66,7 @@ window.util = (function () {
       var permutation = generateIndexesPermutation(array.length);
       var res = [];
       while (n > 0) {
-        res.push(array[permutation[n-1]]);
+        res.push(array[permutation[n - 1]]);
         n--;
       }
       return res;

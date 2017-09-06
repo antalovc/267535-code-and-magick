@@ -5,7 +5,11 @@
 
   var setupWindow = document.querySelector('.setup');
 
-  // draw and setup similar wizards ============================================
+  // draw and setup main wizard ============================================
+
+  window.wizard.setupEvents(setupWindow);
+
+  // draw and setup similar wizards =======================================
 
   window.backend.load(function (data) {
     window.setupSimilars(setupWindow, data);

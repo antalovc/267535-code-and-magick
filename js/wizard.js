@@ -30,8 +30,8 @@ window.wizard = (function () {
 
   return {
     setupEvents: setupEvents,
-    onEyesChange: function (color) {},
-    onCoatChange: function (color) {}
+    onEyesChange: function () {},
+    onCoatChange: function () {}
   };
 
 })();

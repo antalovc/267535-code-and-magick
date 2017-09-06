@@ -3,55 +3,15 @@
 
 (function () {
 
-  var FRIENDS_NUMBER = 4;
-  var COLORS_COAT = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)];'];
-  var COLORS_EYES = ['black', 'red', 'blue', 'yellow', 'green'];
-  var COLORS_FIREBALL = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
-
   var setupWindow = document.querySelector('.setup');
 
-  var drawFriendlyWizard = function (wizardFriend, wizardTemplate) {
-    var wizardElement = wizardTemplate.cloneNode(true);
-    wizardElement.querySelector('.setup-similar-label').textContent = wizardFriend.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizardFriend.colorCoat;
-    wizardElement.querySelector('.wizard-eyes').style.fill = wizardFriend.colorEyes;
-    return wizardElement;
-  };
+  // draw and setup similar wizards ============================================
 
-  var drawFriendlyWizards = function (friendlyWizards, wizardsList, wizardTemplate) {
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < friendlyWizards.length; i++) {
-      fragment.appendChild(drawFriendlyWizard(friendlyWizards[i], wizardTemplate));
-    }
-    wizardsList.appendChild(fragment);
-  };
-
-  // draw wizard's friends============================================
-
-  var friendsElement = setupWindow.querySelector('.setup-similar');
   window.backend.load(function (data) {
-    drawFriendlyWizards(window.util.getNRandomArrayItems(data, FRIENDS_NUMBER), friendsElement.querySelector('.setup-similar-list'), document.querySelector('#similar-wizard-template').content);
-    friendsElement.classList.remove('hidden');
+    window.setupSimilars(setupWindow, data);
   }, window.util.showErrorMessage);
 
-
-  // add wizard setup events==========================================
-
-  var coatSetup = setupWindow.querySelector('.setup-wizard .wizard-coat');
-  var eyesSetup = setupWindow.querySelector('.setup-wizard .wizard-eyes');
-  var fireballSetup = setupWindow.querySelector('.setup-fireball-wrap');
-
-  var fillElement = function (element, color) {
-    element.style.fill = color;
-  };
-
-  var setElementBackground = function (element, color) {
-    element.style.backgroundColor = color;
-  };
-
-  window.colorizeElement(coatSetup, COLORS_COAT, fillElement);
-  window.colorizeElement(eyesSetup, COLORS_EYES, fillElement);
-  window.colorizeElement(fireballSetup, COLORS_FIREBALL, setElementBackground);
+  // add shop and inventory events==========================================
 
   var setupShop = setupWindow.querySelector('.setup-artifacts-shop');
   var setupArtifacts = setupWindow.querySelector('.setup-artifacts');

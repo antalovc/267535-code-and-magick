@@ -11,7 +11,7 @@
 
   var preventSetupUserFileClick = false;
 
-  setupUserPic.querySelector('input[type=file]').addEventListener('click', function (evt) {
+  setupUserPic.querySelector('.upload input[type=file]').addEventListener('click', function (evt) {
     if (preventSetupUserFileClick) {
       evt.preventDefault();
       preventSetupUserFileClick = false;

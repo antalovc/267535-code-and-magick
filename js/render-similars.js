@@ -6,12 +6,25 @@ window.renderSimilars = (function () {
 
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
 
+  var getSimilarWizardArtifacts = function (similarWizard) {
+    return similarWizard.artifacts.map(function (it) {
+      return it.name;
+    }).join('<br');
+  };
+
   var drawSimilarWizard = function (similarWizard) {
-    var wizardElement = similarWizardTemplate.cloneNode(true);
-    wizardElement.querySelector('.setup-similar-label').textContent = similarWizard.name;
+    var wizardTemplateElement = similarWizardTemplate.cloneNode(true);
+    var wizardElement = wizardTemplateElement.querySelector('.wizard');
+
     wizardElement.querySelector('.wizard-coat').style.fill = similarWizard.colorCoat;
     wizardElement.querySelector('.wizard-eyes').style.fill = similarWizard.colorEyes;
-    return wizardElement;
+    wizardTemplateElement.querySelector('.setup-similar-label').textContent = similarWizard.name;
+
+    window.popup(wizardElement, function () {
+      return getSimilarWizardArtifacts(similarWizard);
+    });
+
+    return wizardTemplateElement;
   };
 
   return (function (similarWizardsElement, similarWizards) {

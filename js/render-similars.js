@@ -9,7 +9,7 @@ window.renderSimilars = (function () {
   var getSimilarWizardArtifacts = function (similarWizard) {
     return similarWizard.artifacts.map(function (it) {
       return it.name;
-    }).join('<br');
+    }).join('<br>');
   };
 
   var drawSimilarWizard = function (similarWizard) {
